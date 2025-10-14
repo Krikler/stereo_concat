@@ -1,0 +1,5 @@
+stereo_concat_node:
+  ros__parameters:
+    topics:
+      left_image: "/left/image_rect_color/compressed"
+      right_image: "/right/image_rect_color/compressed"
