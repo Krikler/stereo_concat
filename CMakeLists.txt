@@ -53,6 +53,16 @@ target_link_libraries(stereo_concat stereo_concat_lib)
 install(TARGETS stereo_concat
   DESTINATION lib/${PROJECT_NAME})
 
+# Install config files
+install(DIRECTORY config/
+  DESTINATION share/${PROJECT_NAME}/config/
+)
+
+# Install launch files
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch/
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
