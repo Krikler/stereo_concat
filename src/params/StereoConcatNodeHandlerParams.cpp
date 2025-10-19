@@ -15,6 +15,10 @@ StereoConcatNodeHandlerParams StereoConcatNodeHandlerParams::readParameters(
         "topics.right_image", "/right/image_rect_color/compressed"
     );
 
+    params.concatenated_image_topic = node->declare_parameter(
+        "topics.concatenated_image", "/concatenated_image"
+    );
+
     return params;
 }
 

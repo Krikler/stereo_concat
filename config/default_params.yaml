@@ -3,3 +3,5 @@ stereo_concat_node:
     topics:
       left_image: "/left/image_rect_color/compressed"
       right_image: "/right/image_rect_color/compressed"
+
+      concatenated_image: "/concatenated_image"
