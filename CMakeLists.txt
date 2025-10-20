@@ -13,11 +13,33 @@ find_package(cv_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 
-add_executable(stereo_concat src/stereo_concat.cpp)
+add_library(stereo_concat_lib
+  src/StereoConcatNodeHandler.cpp
+  src/StereoConcat.cpp
+  src/params/StereoConcatNodeHandlerParams.cpp
+)
+
+target_include_directories(stereo_concat_lib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+ament_target_dependencies(
+  stereo_concat_lib
+  "rclcpp"
+  "sensor_msgs"
+  "cv_bridge"
+  "std_msgs"
+  "message_filters"
+)
+
+add_executable(stereo_concat src/stereo_concat_node.cpp)
 target_include_directories(stereo_concat PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_features(stereo_concat PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(stereo_concat PUBLIC c_std_99 cxx_std_17)
 ament_target_dependencies(
   stereo_concat
   "rclcpp"
@@ -26,9 +48,20 @@ ament_target_dependencies(
   "std_msgs"
   "message_filters"
 )
+target_link_libraries(stereo_concat stereo_concat_lib)
 
 install(TARGETS stereo_concat
   DESTINATION lib/${PROJECT_NAME})
+
+# Install config files
+install(DIRECTORY config/
+  DESTINATION share/${PROJECT_NAME}/config/
+)
+
+# Install launch files
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch/
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
